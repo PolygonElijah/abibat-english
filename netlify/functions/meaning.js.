@@ -1,0 +1,17 @@
+exports.handler = async (e) => {
+  const w = ((e.queryStringParameters && e.queryStringParameters.w) || "").slice(0, 80).replace(/"/g, "");
+  if (!w) return { statusCode: 400, body: "{}" };
+  const prompt = 'You teach English to a Turkish speaker at beginner level. For the English word or phrase "' + w + '" reply with ONLY JSON: {"tr":"Turkish translation","meaning":"simple English meaning in one short sentence","example":"one short English example sentence","exampleTr":"Turkish translation of the example"}';
+  try {
+    const r = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "content-type": "application/json", "x-api-key": process.env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01" },
+      body: JSON.stringify({ model: "claude-haiku-5-5", max_tokens: 400, messages: [{ role: "user", content: prompt }] })
+    });
+    const j = await r.json();
+    const t = (j.content && j.content[0] && j.content[0].text) || "{}";
+    return { statusCode: 200, headers: { "content-type": "application/json" }, body: t.replace(/```json|```/g, "").trim() };
+  } catch (err) {
+    return { statusCode: 500, body: "{}" };
+  }
+};
