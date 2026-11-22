@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Abibat’s English School</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Nunito:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f7f6;--card:#fff;--ink:#17323f;--mute:#5b7380;--board:#1f4b4f;--chalk:#f2f5ef;--pen:#ffcb3d;--penink:#3a2a00;--ok:#1b7f53;--no:#b8382f;--line:#d6e1e0;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1c20;--card:#172a30;--ink:#e8f0ee;--mute:#93aab2;--board:#163c40;--line:#28414a;--ok:#5fd09b;--no:#ff8a80;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1c20;--card:#172a30;--ink:#e8f0ee;--mute:#93aab2;--board:#163c40;--line:#28414a;--ok:#5fd09b;--no:#ff8a80;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 17px/1.5 Nunito,system-ui,sans-serif}
+.board{position:relative;overflow:hidden;background:radial-gradient(circle at 88% 8%,#2f8585 0,transparent 45%),radial-gradient(circle at 4% 100%,rgba(232,89,110,.3) 0,transparent 42%),var(--board);color:var(--chalk);padding:36px 18px 56px;border-radius:0 0 40px 40px}
+.board::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.13) 1.5px,transparent 1.5px);background-size:22px 22px;pointer-events:none}
+.board .wrap{position:relative}
+.deco{position:absolute;right:10px;top:14px;width:clamp(80px,22vw,140px);pointer-events:none}
+.wrap{max-width:720px;margin:0 auto}
+h1{font:800 clamp(32px,9vw,52px)/1.02 "Bricolage Grotesque",Nunito,sans-serif;margin:0 0 16px;padding-right:clamp(70px,20vw,140px);letter-spacing:-.02em}
+h1::after{content:"";display:block;width:132px;height:8px;margin-top:14px;border-radius:99px;background:repeating-linear-gradient(90deg,#ffcb3d 0 22px,#e8596e 22px 44px,#5fd0c0 44px 66px)}
+.board p{margin:0 0 20px;opacity:.88}
+.s{display:flex;gap:8px}
+.s input{flex:1;min-width:0;font:700 18px Nunito,sans-serif;padding:14px 16px;border-radius:20px;border:3px solid transparent;background:var(--chalk);color:#17323f;box-shadow:0 12px 28px rgba(0,0,0,.28)}
+.s input:focus-visible,button:focus-visible{outline:3px solid var(--pen);outline-offset:2px}
+.s input::placeholder{color:#6b8088}
+#go{flex:none;border:0;border-radius:20px;background:var(--pen);color:var(--penink);font:800 16px Nunito,sans-serif;padding:0 20px;cursor:pointer}.mx .hint{margin:10px 0 0}.info i{display:block;font-style:normal;color:var(--mute);font-size:14px}
+.chips{display:flex;gap:10px;overflow-x:auto;padding:10px 18px 14px;max-width:720px;margin:-30px auto 0;position:relative;z-index:2;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:2px solid var(--line);background:var(--card);color:var(--ink);font:800 15px Nunito,sans-serif;padding:11px 18px;border-radius:99px;cursor:pointer;box-shadow:0 6px 16px rgba(23,50,63,.14);transition:transform .15s}
+.chip:active{transform:scale(.96)}
+.chip[aria-pressed=true]{background:var(--board);border-color:var(--board);color:var(--chalk)}
+main{max-width:720px;margin:0 auto;padding:8px 18px 40px}
+h2{font:800 24px "Bricolage Grotesque",Nunito,sans-serif;margin:14px 0 2px}
+.sub{color:var(--mute);margin:0 0 12px;font-size:15px}
+.row{--c:#e8596e;background:var(--card);border:2px solid var(--line);border-left:8px solid var(--c);border-radius:22px;padding:16px 16px 14px;margin:0 0 12px;box-shadow:0 6px 18px rgba(23,50,63,.08)}
+.row:nth-child(4n+2){--c:#f0a830}.row:nth-child(4n+3){--c:#2fa58f}.row:nth-child(4n+4){--c:#5b7fe0}
+.t b{display:block;font:800 22px/1.2 "Bricolage Grotesque",Nunito,sans-serif}
+.t i{display:block;color:var(--mute);font-style:normal;font-size:15px;margin-top:2px}
+.info{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:12px}.info div{background:color-mix(in srgb,var(--c) 14%,var(--card));border-radius:14px;padding:8px 12px}.info small{display:block;font:700 12px Nunito,sans-serif;color:var(--mute)}.info span{font:800 17px/1.25 Nunito,sans-serif}.hint{color:var(--mute);margin:6px 0 0;font-size:15px}
+.a{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.a button{display:flex;flex-direction:column;align-items:center;line-height:1.15;border:2px solid var(--c);background:transparent;color:var(--ink);font:800 15px Nunito,sans-serif;padding:8px 18px;border-radius:99px;cursor:pointer;min-width:92px}
+.a button small{font:600 12px Nunito,sans-serif;color:var(--mute)}
+.a button:active{transform:scale(.97)}
+.a .m{background:var(--pen);border-color:var(--pen);color:var(--penink)}
+.a .m small{color:var(--penink);opacity:.75}
+.a button.on{outline:3px solid var(--ink)}
+.fb{margin:10px 0 0;font-weight:700;font-size:16px;min-height:0}
+.fb:empty{display:none}
+.fb.ok{color:var(--ok)}.fb.no{color:var(--no)}
+.empty{color:var(--mute);padding:18px 0}
+footer{max-width:720px;margin:0 auto;padding:0 18px 28px;color:var(--mute);font-size:14px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.auth{display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap;font-weight:700}.auth button{display:flex;flex-direction:column;align-items:center;line-height:1.15;border:2px solid var(--chalk);background:transparent;color:var(--chalk);border-radius:99px;padding:8px 16px;font:800 14px Nunito,sans-serif;cursor:pointer}.auth small{font:600 11px Nunito,sans-serif;opacity:.8}.hist{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.hist b{width:100%;font-size:13px;opacity:.85}.hist button{border:0;border-radius:99px;background:rgba(255,255,255,.16);color:var(--chalk);padding:6px 12px;font:700 14px Nunito,sans-serif;cursor:pointer}
+</style>
+</head>
+<body>
+<header class="board"><svg class="deco" viewBox="0 0 160 160" aria-hidden="true"><path d="M80 150V80" stroke="#7bd8a8" stroke-width="6" stroke-linecap="round"/><path d="M80 130c-22-4-34-18-36-34 20 2 32 14 36 34zM80 118c20-2 32-14 36-30-18 0-30 10-36 30z" fill="#4fbf8f"/><path d="M52 70c-6-30 8-48 28-56 20 8 34 26 28 56-8 14-48 14-56 0z" fill="#e8596e"/><path d="M80 14c-10 12-12 34-4 56h8c8-22 6-44-4-56z" fill="#ff8a9a"/><path d="M20 40l4 10 10 4-10 4-4 10-4-10-10-4 10-4z" fill="#ffcb3d"/><path d="M138 100l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#ffcb3d"/></svg><div class="wrap">
+<h1>Abibat’s English School</h1>
+<p>Search a word or sentence. Listen to it. Say it back. · Bir kelime ara, dinle, tekrar et.</p>
+<div class="s"><input id="q" type="search" placeholder="Type any English word…" aria-label="Search or type an English word" autocomplete="off" autocapitalize="off"><button id="go" type="button">Search</button></div>
+<div class="auth"><span id="who"></span><button id="login" type="button">Sign in with Google<small>Google ile giriş</small></button></div><div class="hist" id="hist"></div>
+</div></header>
+<nav class="chips" id="chips" aria-label="Lessons"></nav>
+<main><h2 id="h"></h2><p class="sub" id="sub"></p><div id="list"></div></main>
+<footer>Voice practice works best in Chrome or Safari. Allow the microphone when asked · Mikrofona izin ver</footer>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+var L=[
+["Alphabet","Alfabe",`A — Apple|Elma|A, apple
+B — Ball|Top|B, ball
+C — Cat|Kedi|C, cat
+D — Dog|Köpek|D, dog
+E — Egg|Yumurta|E, egg
+F — Fish|Balık|F, fish
+G — Goat|Keçi|G, goat
+H — Hat|Şapka|H, hat
+I — Ice|Buz|I, ice
+J — Juice|Meyve suyu|J, juice
+K — Kite|Uçurtma|K, kite
+L — Lion|Aslan|L, lion
+M — Moon|Ay|M, moon
+N — Nose|Burun|N, nose
+O — Orange|Portakal|O, orange
+P — Pen|Kalem|P, pen
+Q — Queen|Kraliçe|Q, queen
+R — Rain|Yağmur|R, rain
+S — Sun|Güneş|S, sun
+T — Tree|Ağaç|T, tree
+U — Umbrella|Şemsiye|U, umbrella
+V — Violin|Keman|V, violin
+W — Water|Su|W, water
+X — Xylophone|Ksilofon|X, xylophone
+Y — Yellow|Sarı|Y, yellow
+Z — Zebra|Zebra|Z, zebra`],
+["Numbers","Sayılar",`One|Bir
+Two|İki
+Three|Üç
+Four|Dört
+Five|Beş
+Six|Altı
+Seven|Yedi
+Eight|Sekiz
+Nine|Dokuz
+Ten|On
+Eleven|On bir
+Twelve|On iki
+Thirteen|On üç
+Fourteen|On dört
+Fifteen|On beş
+Sixteen|On altı
+Seventeen|On yedi
+Eighteen|On sekiz
+Nineteen|On dokuz
+Twenty|Yirmi
+Thirty|Otuz
+Forty|Kırk
+Fifty|Elli
+One hundred|Yüz
+One thousand|Bin`],
+["Greetings","Selamlaşma",`Hello|Merhaba
+Hi|Selam
+Good morning|Günaydın
+Good afternoon|İyi günler
+Good evening|İyi akşamlar
+Good night|İyi geceler
+How are you?|Nasılsın?
+I'm fine, thank you|İyiyim, teşekkürler
+Nice to meet you|Tanıştığımıza memnun oldum
+What is your name?|Adın ne?
+My name is Abibat|Benim adım Abibat
+Please|Lütfen
+Thank you|Teşekkür ederim
+You're welcome|Rica ederim
+Excuse me|Affedersiniz
+I'm sorry|Üzgünüm
+Goodbye|Hoşça kal
+See you tomorrow|Yarın görüşürüz`],
+["Questions","Sorular",`What?|Ne?
+Where?|Nerede?
+When?|Ne zaman?
+Why?|Neden?
+Who?|Kim?
+How?|Nasıl?
+Which one?|Hangisi?
+How much is this?|Bu ne kadar?
+What time is it?|Saat kaç?
+Where are you from?|Nerelisin?
+Do you speak English?|İngilizce konuşuyor musun?
+I don't understand|Anlamıyorum
+Can you repeat, please?|Tekrar eder misin, lütfen?
+Can you speak slowly?|Yavaş konuşabilir misin?
+How do you say this in English?|Bunu İngilizce nasıl söylersin?
+Can you help me?|Bana yardım edebilir misin?`],
+["Days & months","Gün ve aylar",`Monday|Pazartesi
+Tuesday|Salı
+Wednesday|Çarşamba
+Thursday|Perşembe
+Friday|Cuma
+Saturday|Cumartesi
+Sunday|Pazar
+January|Ocak
+February|Şubat
+March|Mart
+April|Nisan
+May|Mayıs
+June|Haziran
+July|Temmuz
+August|Ağustos
+September|Eylül
+October|Ekim
+November|Kasım
+December|Aralık
+Today|Bugün
+Tomorrow|Yarın
+Yesterday|Dün`],
+["Colors","Renkler",`Red|Kırmızı
+Blue|Mavi
+Green|Yeşil
+Yellow|Sarı
+Black|Siyah
+White|Beyaz
+Pink|Pembe
+Purple|Mor
+Orange|Turuncu
+Brown|Kahverengi
+Gray|Gri
+Gold|Altın`],
+["Family","Aile",`Mother|Anne
+Father|Baba
+Sister|Kız kardeş
+Brother|Erkek kardeş
+Grandmother|Büyükanne
+Grandfather|Büyükbaba
+Aunt|Teyze, hala
+Uncle|Amca, dayı
+Husband|Koca
+Wife|Eş
+Boyfriend|Erkek arkadaş
+Girlfriend|Kız arkadaş
+Friend|Arkadaş
+Baby|Bebek`],
+["Food & drink","Yiyecek, içecek",`Water|Su
+Tea|Çay
+Coffee|Kahve
+Milk|Süt
+Bread|Ekmek
+Rice|Pirinç
+Chicken|Tavuk
+Meat|Et
+Fish|Balık
+Egg|Yumurta
+Cheese|Peynir
+Salad|Salata
+Apple|Elma
+Banana|Muz
+I am hungry|Acıktım
+I am thirsty|Susadım
+The bill, please|Hesap, lütfen`],
+["Verbs","Fiiller",`To be|Olmak
+To have|Sahip olmak
+To go|Gitmek
+To come|Gelmek
+To eat|Yemek
+To drink|İçmek
+To want|İstemek
+To like|Hoşlanmak
+To love|Sevmek
+To see|Görmek
+To listen|Dinlemek
+To speak|Konuşmak
+To read|Okumak
+To write|Yazmak
+To learn|Öğrenmek
+To work|Çalışmak
+To play|Oynamak
+To sleep|Uyumak
+To buy|Satın almak
+To understand|Anlamak`],
+["Sentences","Cümleler",`I am a student|Ben bir öğrenciyim
+You are my friend|Sen benim arkadaşımsın
+He is a teacher|O bir öğretmen
+She is very kind|O çok nazik
+We are learning English|İngilizce öğreniyoruz
+They are at home|Onlar evde
+I have a book|Bir kitabım var
+I don't have time|Vaktim yok
+I like music|Müziği severim
+I want to speak English well|İngilizceyi iyi konuşmak istiyorum
+I am from Turkey|Ben Türkiye’denim
+I go to school every day|Her gün okula giderim
+Today is a beautiful day|Bugün güzel bir gün
+I love learning new words|Yeni kelimeler öğrenmeyi seviyorum`]
+];
+var I=["🔤","🔢","👋","❓","📅","🎨","👨‍👩‍👧","🍽️","🏃","💬"],cat=0,cur=[],V=null,$=function(i){return document.getElementById(i)};
+var W="one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty".split(" ");
+var PR=["ey · epıl|bi · bol|si · ket|di · dog|i · eg|ef · fiş|ci · gout|eyç · het|ay · ays|cey · cuus|key · kayt|el · layın|em · muun|en · nouz|ou · orınc|pi · pen|kyu · kvin|ar · reyn|es · san|ti · tri|yu · ambrela|vi · vayolin|dabılyu · votır|eks · zaylofon|vay · yelou|zed · zibra","van|tu|tri|for|fayv|siks|sevın|eyt|nayn|ten|ilevın|tuelv|törtiin|fortiin|fiftiin|sikstiin|sevıntiin|eytiin|nayntiin|tventi|törti|forti|fifti|van handırıd|van tauzınd","helo|hay|gud morning|gud aftırnun|gud ivning|gud nayt|hav ar yu|aym fayn tenk yu|nays tu miit yu|vot iz yor neym|may neym iz abibat|pliiz|tenk yu|yor velkım|ikskyuz mi|aym sori|gud bay|si yu tumorou","vot|ver|ven|vay|hu|hav|viç van|hav maç iz dis|vot taym iz it|ver ar yu from|du yu spiik ingliş|ay dont andırstend|ken yu ripiit pliiz|ken yu spiik slouli|hav du yu sey dis in ingliş|ken yu help mi","mandey|tyuzdey|venzdey|törzdey|fraydey|setırdey|sandey|cenyueri|februeri|març|eyprıl|mey|cun|culay|ogıst|septembır|oktobır|november|disembır|tudey|tumorou|yestırdey","red|blu|griin|yelou|blek|vayt|pink|pörpıl|orınc|braun|grey|gould","madır|fadır|sistır|bradır|grendmadır|grendfadır|ent|ankıl|hazbınd|vayf|boyfrend|görlfrend|frend|beybi","votır|ti|kofi|milk|bred|rays|çikın|miit|fiş|eg|çiiz|selıd|epıl|bınena|ay em hangri|ay em törsti|dı bil pliiz","tu bi|tu hev|tu gou|tu kam|tu iit|tu drink|tu vont|tu layk|tu lav|tu si|tu lisın|tu spiik|tu riid|tu rayt|tu lörn|tu vörk|tu pley|tu sliip|tu bay|tu andırstend","ay em ey stuudınt|yu ar may frend|hi iz ey tiiçır|şi iz veri kaynd|vi ar lörning ingliş|dey ar et houm|ay hev ey buk|ay dont hev taym|ay layk myuzik|ay vont tu spiik ingliş vel|ay em from törki|ay gou tu skul evri dey|tudey iz ey byutifıl dey|ay lav lörning nyu vörds"].map(function(s){return s.split("|")});
+var ALL=[];
+L.forEach(function(c,ci){c[2].split("\n").forEach(function(l,j){var p=l.split("|");ALL.push({d:p[0],t:p[1],s:p[2]||p[0],p:PR[ci][j]})})});
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function pretty(s){return esc(s).replace(/'/g,"\u2019")}
+function pick(){var v=speechSynthesis.getVoices();V=v.filter(function(x){return /^en[-_]US/i.test(x.lang)})[0]||v.filter(function(x){return /^en/i.test(x.lang)})[0]||null}
+if("speechSynthesis" in window){pick();speechSynthesis.onvoiceschanged=pick}
+function say(t,r,g){if(!("speechSynthesis" in window))return;speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang=g||"en-US";u.rate=r;var vv=g?speechSynthesis.getVoices().filter(function(x){return /^tr/i.test(x.lang)})[0]:V;if(vv)u.voice=vv;speechSynthesis.speak(u)}
+function norm(s){s=s.toLowerCase().replace(/[^a-z0-9 ]/g,"").trim();return /^\d+$/.test(s)&&W[s-1]?W[s-1]:s}
+function rec(target,el,btn){
+ var R=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!R){el.className="fb no";el.textContent="Voice practice needs Chrome or Safari · Chrome veya Safari kullan";return}
+ var r=new R();r.lang="en-US";r.maxAlternatives=3;
+ el.className="fb";el.textContent="Listening… Say it now · Dinliyorum…";btn.classList.add("on");
+ r.onresult=function(e){
+  var a=[].map.call(e.results[0],function(x){return x.transcript}),t=norm(target);
+  var ok=a.some(function(x){return norm(x)===t});
+  el.className="fb "+(ok?"ok":"no");
+  el.textContent=ok?"Perfect! Mükemmel 🎉":"You said “"+a[0]+"”. Listen again, then try again · Tekrar dene"};
+ r.onerror=function(){el.className="fb no";el.textContent="I could not hear you. Allow the microphone and try again · Mikrofona izin ver"};
+ r.onend=function(){btn.classList.remove("on")};
+ try{r.start()}catch(e){}
+}
+function render(items,title,sub){
+ cur=items;$("h").textContent=title;$("sub").textContent=sub;
+ $("list").innerHTML=items.length?items.map(function(x,i){return '<div class="row"><div class="t"><b>'+pretty(x.d)+'</b></div>'+(x.free?'<p class="hint">Type any English word, then press Search for its meaning · Anlamı için Ara’ya bas</p>':'<div class="info"><div><small>Turkish · Türkçesi</small><span>'+pretty(x.t)+'</span></div></div>')+'<div class="mx" id="m'+i+'"></div><div class="a"><button data-k="l" data-i="'+i+'">Listen<small>Dinle</small></button><button data-k="t" data-i="'+i+'">Türkçe<small>Turkish</small></button><button data-k="s" data-i="'+i+'">Slow<small>Yavaş</small></button><button data-k="m" data-i="'+i+'">Meaning<small>Anlam</small></button><button class="m" data-k="r" data-i="'+i+'">Say it<small>Söyle</small></button></div><p class="fb" id="f'+i+'"></p></div>'}).join(""):'<p class="empty">Nothing found. Try another word.</p>'}
+function show(){
+ var q=$("q").value.trim();
+ if(q){
+  var lq=q.toLowerCase();
+  var hits=ALL.filter(function(x){return x.d.toLowerCase().indexOf(lq)>-1||x.t.toLowerCase().indexOf(lq)>-1}).slice(0,30);
+  render([{d:q,t:"",s:q,free:1}].concat(hits),"Results for “"+q+"”","Tap Listen, then Say it · Dinle, sonra söyle");
+  chipsUpdate(-1);return}
+ var c=L[cat];render(c[2].split("\n").map(function(l,j){var p=l.split("|");return{d:p[0],t:p[1],s:p[2]||p[0],p:PR[cat][j]}}),c[0],c[1]);chipsUpdate(cat)}
+function chipsUpdate(a){[].forEach.call($("chips").children,function(b,i){b.setAttribute("aria-pressed",i===a)})}
+$("chips").innerHTML=L.map(function(c,i){return '<button class="chip" data-c="'+i+'" aria-pressed="false">'+I[i]+' '+esc(c[0])+'</button>'}).join("");
+$("chips").addEventListener("click",function(e){var b=e.target.closest(".chip");if(!b)return;cat=+b.dataset.c;$("q").value="";show();window.scrollTo({top:0})});
+$("q").addEventListener("input",show);
+$("list").addEventListener("click",function(e){
+ var b=e.target.closest("button");if(!b)return;var x=cur[+b.dataset.i],k=b.dataset.k;
+ if(k==="l")say(x.s,.9);else if(k==="s")say(x.s,.5);else if(k==="t"){if(x.t)say(x.t,.85,"tr-TR");else showM(+b.dataset.i).then(function(){if(x.t)say(x.t,.85,"tr-TR")})}else if(k==="m")showM(+b.dataset.i);else rec(x.s,$("f"+b.dataset.i),b)});
+var MC={};
+function getM(w){var k=w.toLowerCase();if(MC[k])return Promise.resolve(MC[k]);return fetch("/.netlify/functions/meaning?w="+encodeURIComponent(w)).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(r){MC[k]=r;return r})}
+function showM(i){var el=$("m"+i),x=cur[i];if(!el)return Promise.resolve();el.innerHTML='<p class="hint">Finding the meaning… · Anlam aranıyor…</p>';return getM(x.d).then(function(r){if(x.free)x.t=r.tr||"";el.innerHTML='<div class="info"><div><small>Meaning · Anlamı</small><span>'+pretty(r.meaning||"")+'</span></div><div><small>Example · Örnek</small><span>'+pretty(r.example||"")+'</span><i>'+pretty(r.exampleTr||"")+'</i></div>'+(x.free?'<div><small>Turkish · Türkçesi</small><span>'+pretty(r.tr||"")+'</span></div>':"")+'</div>'}).catch(function(){el.innerHTML='<p class="hint">Meaning is not available right now · Anlam şu an yok</p>'})}
+$("go").addEventListener("click",function(){if($("q").value.trim()){save($("q").value);showM(0)}});
+$("q").addEventListener("keydown",function(e){if(e.key==="Enter"&&$("q").value.trim()){save($("q").value);showM(0)}});
+var FB={apiKey:"AIzaSyAA-411OLuBGvNuYG9L_BLHY3DOe17oUSo",authDomain:"abibat-5ab02.firebaseapp.com",projectId:"abibat-5ab02",appId:"1:386908265293:web:7ea326603b3d1c7c6bf504"};
+var fbOK=FB.apiKey&&window.firebase,user=null,hist=[],auth,store;
+function uiAuth(){$("who").textContent=user?"Hi, "+(user.displayName||user.email):"";$("login").innerHTML=user?"Sign out<small>Çıkış</small>":"Sign in with Google<small>Google ile giriş</small>"}
+function histShow(){var h=$("hist");if(!user){h.innerHTML=fbOK?"<b>Sign in to save your searches · Aramalarını kaydetmek için giriş yap</b>":"";return}h.innerHTML=hist.length?"<b>Recent searches · Son aramalar</b>"+hist.map(function(w,i){return '<button data-w="'+i+'">'+esc(w)+"</button>"}).join(""):"<b>No searches yet · Henüz arama yok</b>"}
+function save(q){if(!user)return;q=q.trim().slice(0,80);hist=[q].concat(hist.filter(function(w){return w.toLowerCase()!==q.toLowerCase()})).slice(0,20);histShow();store.collection("users").doc(user.uid).set({searches:hist}).catch(function(){})}
+$("hist").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;$("q").value=hist[+b.dataset.w];show();showM(0)});
+if(fbOK){firebase.initializeApp(FB);auth=firebase.auth();store=firebase.firestore();
+$("login").onclick=function(){if(user)auth.signOut();else auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(function(){})};
+auth.onAuthStateChanged(function(u){user=u;uiAuth();hist=[];histShow();if(u)store.collection("users").doc(u.uid).get().then(function(d){hist=d.exists&&d.data().searches||[];histShow()}).catch(function(){})})}
+else $("login").style.display="none";
+uiAuth();histShow();
+show();
+</script>
+</body>
+</html>
